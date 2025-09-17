@@ -1,0 +1,1 @@
+打包：`pyinstaller --onefile --name eclock main.py`

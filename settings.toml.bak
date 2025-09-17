@@ -1,0 +1,12 @@
+token = "mDH0PvLX_1758082840"
+activity_id = "ac_68ca1ce392b9d_W2yNRsgG"
+pdf_file_path = "F:\\Download\\认知觉醒：开启自我改变的原动力.pdf"
+
+[ai]
+model_id = "qwen-plus-2025-04-28"
+api_key = "sk-a39b96a286514d2fdsadasd0cf3f34af"
+base_url = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+prompt = "根据这段内容，从一个程序员的视角，写一篇读后感，预计50–150 字，语言自然、真诚。"
+
+[ding]
+robot_webhook = "https://oapi.dingtalk.com/robot/send?access_token=9e220cdsadasdsadas111b7cf2e14832d69b926d208824c"
