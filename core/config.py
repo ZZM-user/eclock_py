@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 
 import tomli
-from loguru import logger
+from core.log import logger
 from pydantic_settings import BaseSettings
 
 __all__ = ["settings"]

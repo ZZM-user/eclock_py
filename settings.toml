@@ -1,12 +1,12 @@
-token = "dhJ7E6AI_17dsa5534"
-activity_id = "ac_6852dsaa2d_z263wtMs"
-pdf_file_path = "F:\\Download\\认知觉醒：开启自我改变的原动力.pdf"
+token = "zHDu8szf_1758273884"
+activity_id = "ac_6852245251a2d_z263wtMs"
+pdf_file_path = "E:\\Downloads\\认知觉醒：开启自我改变的原动力.pdf"
 
 [ai]
 model_id = "qwen-plus-2025-04-28"
-api_key = "sk-a39b96a286dasdasdas1790cf3f34af"
+api_key = "sk-a39b96a286514d2fa6231790cf3f34af"
 base_url = "https://dashscope.aliyuncs.com/compatible-mode/v1"
-prompt = "根据这段内容，从一个程序员的视角，写一篇读后感，预计50–150 字，语言自然、真诚。"
+prompt = "根据这段内容，从一个程序员的视角，写一篇读后感，预计50-150 字，语言自然、真诚。"
 
 [ding]
-robot_webhook = "https://oapi.dingtalk.com/robot/send?access_token=9e220c1fa67bde191dsadasdaf2e14832d69b926d208824c"
+robot_webhook = "https://oapi.dingtalk.com/robot/send?access_token=9e220c1fa67bde191e829495a878ef06e85111b7cf2e14832d69b926d208824c"

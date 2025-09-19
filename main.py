@@ -4,7 +4,7 @@ import random
 import time
 from pathlib import Path
 
-from loguru import logger
+from core.log import logger
 
 import api.eclock
 import core.config
@@ -12,15 +12,6 @@ import core.convert
 import core.ding_bot
 import core.state
 from ai import reader_agent
-
-logger.add(
-    "logs/log_{time:YYYY-MM-DD}.log",  # 文件名按天生成
-    rotation="00:00",                   # 每天零点切割
-    retention="30 days",                 # 保留 10 天
-    compression="zip",                   # 旧日志压缩
-    encoding="utf-8",
-    format="{time:YYYY-MM-DD HH:mm:ss} | {level:<8} | {message}"
-)
 
 
 def run():

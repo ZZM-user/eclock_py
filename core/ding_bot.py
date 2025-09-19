@@ -1,7 +1,7 @@
 import json
 
 import requests
-from loguru import logger
+from core.log import logger
 
 
 def send_ding_message(webhook: str, message: str) -> None:

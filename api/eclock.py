@@ -1,5 +1,5 @@
 import requests
-from loguru import logger
+from core.log import logger
 
 import core.config
 
@@ -81,3 +81,33 @@ def publish_daily(text_content: str, file_records: list[dict]):
     # 返回不含 打卡成功 就是失败，需要断言
     if "打卡成功" not in str(response.json()):
         raise RuntimeError(f"打卡失败！接口返回结果为：{response.json()}")
+
+
+def get_user_info() -> dict:
+    """
+    获取用户信息
+    :return:
+    """
+    config = core.config.settings
+    url = f'{__HOST}/eclock/get_user_info'
+
+    headers = {'Cookie': f'token={config.token}'}
+
+    response = requests.post(url, headers = headers)
+    logger.info(f'获取用户信息：{response.json()}')
+    return response.json().get('data')
+
+def get_user_join_clock():
+    """
+    获取用户参与打卡列表
+    :return:
+    """
+    config = core.config.settings
+    url = f'{__HOST}/eclock/user_join_clock/2.0.0'
+
+    headers = {'Cookie': f'token={config.token}'}
+    body = {"page_index":1,"page_size":10}
+
+    response = requests.post(url, headers = headers, json = body)
+    logger.info(f'获取用户参与打卡列表：{response.json()}')
+    return response.json().get('data')
