@@ -14,12 +14,12 @@ import core.state
 from ai import reader_agent
 
 logger.add(
-    "logs/log_{time}.log",  # 文件名可以带时间占位
-    rotation = "10 MB",  # 文件超过 10 MB 自动切割
-    retention = "10 days",  # 只保留 10 天
-    compression = "zip",  # 旧文件压缩
-    encoding = "utf-8",
-    format = "{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {message}"
+    "logs/log_{time:YYYY-MM-DD}.log",  # 文件名按天生成
+    rotation="00:00",                   # 每天零点切割
+    retention="30 days",                 # 保留 10 天
+    compression="zip",                   # 旧日志压缩
+    encoding="utf-8",
+    format="{time:YYYY-MM-DD HH:mm:ss} | {level:<8} | {message}"
 )
 
 
