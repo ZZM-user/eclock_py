@@ -4,7 +4,10 @@ import random
 import time
 from pathlib import Path
 
+from fastapi import FastAPI, APIRouter
 from loguru import logger
+from pydantic import BaseModel
+from starlette.middleware.cors import CORSMiddleware
 
 import api.eclock
 import core.config
@@ -64,11 +67,84 @@ def run():
 def main():
     try:
         run()
+        return {
+            "code": 200,
+            "message": "打卡成功",
+            "success": True
+        }
     except Exception as e:
-        logger.error(e)
-        core.ding_bot.send_ding_message(core.config.settings.ding.robot_webhook,
-                                        f"失败打卡\n{e}")
+        logger.error(f"打卡失败: {str(e)}")
+        # 出错时删除 Redis 中的 token
+        redis_client = core.config.settings.get_redis_client()
+        redis_client.delete('eclock_token')
+        return {
+            "code": 500,
+            "message": f"打卡失败: {str(e)}",
+            "success": False
+        }
 
+
+class TokenParams(BaseModel):
+    token: str
+    clock_in: bool = True
+
+
+class RunParams(BaseModel):
+    app_id: str
+    activity_id: str
+    clock_theme_id: str
+    ai_api_key: str
+    ding_webhook_url: str
+    token: str
+
+    def override(self):
+        core.config.settings.app_id = self.app_id
+        core.config.settings.activity_id = self.activity_id
+        core.config.settings.clock_theme_id = self.clock_theme_id
+        core.config.settings.ai.api_key = self.ai_api_key
+        core.config.settings.ding.robot_webhook = self.ding_webhook_url
+        if self.token:
+            core.config.settings.token = self.token
+
+
+# =========================
+# FastAPI 实例
+# =========================
+app = FastAPI()
+api_router = APIRouter(prefix = "/api/v1")
+
+# =========================
+# 中间件
+# =========================
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins = ["*"],
+    allow_credentials = True,
+    allow_methods = ["*"],
+    allow_headers = ["*"],
+)
+
+
+@api_router.post("/clockIn")
+def click_in(params: TokenParams):
+    if params.token:
+        redis_client = core.config.settings.get_redis_client()
+        redis_client.set('eclock_token', params.token)
+        logger.info(f"设置token: {params.token}")
+    if params.click_in:
+        return main()
+    return "ok"
+
+
+app.include_router(api_router)
 
 if __name__ == "__main__":
-    main()
+    import uvicorn
+
+    uvicorn.run(
+        "main:app",
+        host = "0.0.0.0",
+        port = 5001,
+        workers = 20,
+        reload = True  # 开发模式自动重载
+    )

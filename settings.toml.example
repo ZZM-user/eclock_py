@@ -1,6 +1,9 @@
 token = "dhJ7E6AI_17dsa5534"
 activity_id = "ac_6852dsaa2d_z263wtMs"
 pdf_file_path = "F:\\Download\\认知觉醒：开启自我改变的原动力.pdf"
+redis_host = "localhost"
+redis_port = 6379
+redis_db = 0
 
 [ai]
 model_id = "qwen-plus-2025-04-28"

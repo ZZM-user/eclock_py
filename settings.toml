@@ -1,10 +1,10 @@
-token = "dhJ7E6AI_17dsa5534"
-activity_id = "ac_6852dsaa2d_z263wtMs"
+token = "azhoZrwh_1759940944"
+activity_id = "ac_6852245251a2d_z263wtMs"
 pdf_file_path = "F:\\Download\\认知觉醒：开启自我改变的原动力.pdf"
 
 [ai]
-model_id = "qwen-plus-2025-04-28"
-api_key = "sk-a39b96a286dasdasdas1790cf3f34af"
+model_id = "qwen3-max-2025-09-23"
+api_key = "sk-19fa3e7019f74262883d2bad0a85f0ca"
 base_url = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 prompt = "根据这段内容，从一个程序员的视角，写一篇读后感，预计50–150 字，语言自然、真诚。"
 

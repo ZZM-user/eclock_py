@@ -2,8 +2,22 @@ import requests
 from loguru import logger
 
 import core.config
+from core.config import settings
 
 __HOST = 'https://eclock.h5.xiaoeknow.com'
+
+
+def _get_token():
+    """
+    从 Redis 获取 token，如果不存在则使用配置中的 token
+    :return: token
+    """
+    redis_client = settings.get_redis_client()
+    token = redis_client.get('eclock_token')
+    if not token:
+        token = settings.token
+        redis_client.set('eclock_token', token)
+    return token
 
 
 def get_user_id() -> str:
@@ -14,7 +28,7 @@ def get_user_id() -> str:
     config = core.config.settings
     url = f'{__HOST}/eclock/get_user_id'
 
-    headers = {'Cookie': f'token={config.token}'}
+    headers = {'Cookie': f'token={_get_token()}'}
 
     body = {"app_id": config.app_id}
 
@@ -33,7 +47,7 @@ def get_activity_diary_lists(page_index: int = 1, page_size: int = 20) -> list[d
     config = core.config.settings
     url = f'{__HOST}/punch_card/activity_diary_lists/2.0.0'
 
-    headers = {'Cookie': f'token={config.token}'}
+    headers = {'Cookie': f'token={_get_token()}'}
 
     body = {
         "app_id": config.app_id,
@@ -59,7 +73,7 @@ def publish_daily(text_content: str, file_records: list[dict]):
 
     url = f'{__HOST}/punch_card/publish_diary/2.0.0'
 
-    headers = {'Cookie': f'token={config.token}'}
+    headers = {'Cookie': f'token={_get_token()}'}
 
     body = {
         "clock_theme_id": config.clock_theme_id,
@@ -80,4 +94,7 @@ def publish_daily(text_content: str, file_records: list[dict]):
 
     # 返回不含 打卡成功 就是失败，需要断言
     if "打卡成功" not in str(response.json()):
+        # 打卡失败，删除 Redis 中的 token
+        redis_client = settings.get_redis_client()
+        redis_client.delete('eclock_token')
         raise RuntimeError(f"打卡失败！接口返回结果为：{response.json()}")

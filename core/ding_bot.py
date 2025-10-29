@@ -5,6 +5,9 @@ from loguru import logger
 
 
 def send_ding_message(webhook: str, message: str) -> None:
+    if not webhook:
+        return
+
     message = f'{message}\n【鹅打卡推送】\n'
 
     headers = {"Content-Type": "application/json"}

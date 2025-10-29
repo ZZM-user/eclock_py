@@ -1,6 +1,7 @@
 import sys
 from pathlib import Path
 
+import redis
 import tomli
 from loguru import logger
 from pydantic_settings import BaseSettings
@@ -21,6 +22,9 @@ class Ding(BaseSettings):
 
 class Config(BaseSettings):
     token: str
+    redis_host: str = "localhost"
+    redis_port: int = 6379
+    redis_db: int = 0
     app_id: str = 'appVH4ImDNo1647'
     activity_id: str
     clock_theme_id: str = ""
@@ -56,6 +60,18 @@ class Config(BaseSettings):
             return cls(**tomli.loads(pkg_default.read_text(encoding = "utf-8")))
 
         raise FileNotFoundError(f"无法找到配置文件 {filename}")
+
+    def get_redis_client(self) -> redis.Redis:
+        """
+        获取 Redis 客户端实例
+        :return: Redis 客户端
+        """
+        return redis.Redis(
+            host=self.redis_host,
+            port=self.redis_port,
+            db=self.redis_db,
+            decode_responses=True
+        )
 
 
 settings = Config.from_toml()
