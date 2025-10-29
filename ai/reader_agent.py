@@ -2,7 +2,7 @@ from agno.agent import Agent
 from agno.models.openai import OpenAILike
 from agno.run.team import TeamRunOutput
 from agno.team import Team
-from loguru import logger
+from core.log import logger
 
 import core.config
 
